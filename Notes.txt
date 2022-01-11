@@ -134,8 +134,8 @@ ELB & ASG - Elastic Load Balancing & Auto Scaling Groups
    Load balancers are servers that forward internet traffic to multiple
    servers (EC2 Instances) downstream.
    ELB - Elastic Load Balancer 
-    ALB (Application) 
-    NLB (network)
+    ALB (Application) - Http L7 
+    NLB (network)-  TCP -L4
     CLB (Classic) 
 
   Auto Scaling Gorup (ASG):
@@ -143,6 +143,25 @@ ELB & ASG - Elastic Load Balancing & Auto Scaling Groups
    Dynamic Scaling 
    Predictive Scaling 
 
+  Summary: 
+  -High Availability vs Scalability vs Elasticity vs Agility:
+    High Availability: Having instances in multiple AZs
+    Scalability: Vertical (increasing the size of the instance) &
+                 Horizontal (increasing the number of instances) 
+    Elasticity: Ability to scale up/down 
+    Agility: Work faster by creating/deleting instance faster 
+  
+  -Elastic Load Balancer (ELB):
+    Distribute traffic accross backend EC2 instances 
+    Multi AZ instances 
+    Supports health checks 
+    3 types: Application LB (Http L7) , Network LB (TCP L4), Classic LB 
+
+  -Auto Scaling Groups (ASG):
+    Implement Elasticity for instances , across Multi AZ 
+    Scale EC2 instance based on demand 
+    Replace unhealthy instances 
+    Integrate with ELB 
 
 Amazon S3 service: 
    Store objects (files) in buckets (directories)
@@ -165,7 +184,7 @@ Amazon S3 service:
    We need to turn off "Block public access"
    And define a bucket policy :
    (mention resource as arn_number/*)
-                  {
+            {
               "Id": "Policy1639227397127",
               "Version": "2012-10-17",
               "Statement": [
@@ -181,6 +200,101 @@ Amazon S3 service:
               ]
             }
 
+  AWS Snow Family: 
+    Offline Devices to perform 
+      Data Migration usages 
+      Edge Computing purposes  
+
+    Snow Family Devices : 
+      1. Snowcone 
+        -Small potable, rugged devices 
+        -withstand harsh environment 
+        -Good for remote research facilities 
+        - < 8 TBs
+      2. Snowball Edge
+        - < 80 TB 
+        - DataCentre decommissioning 
+        - Huge data migrations 
+      3. Snowmobile: 
+         < 100 PB 
+         -Entire truck 
+         -High Security 
+         -For transfering > 10 PB of data
+
+      AWS Datasync: 
+        To transfer Data online from Snowball devices 
+
+    What is Edge Computing ?
+      -Process Data at remote location with no Internet connectivity
+      -Setup Snowball edge/Snowcone device 
+      -Ship to AWS facility 
+      Devices: 
+        -Snowcone 
+        -Snowball Edge - Compute Optimized 
+        -Snowball Edge - Storage Optimized 
+        Long term deployments (1 and 3 years)
+
+    AWS OpsHub: 
+      -Software to use and manage Snow Family Devices 
+
+  Hybrid Cloud for Storage: 
+    -Part of infra is on-prem & rest on cloud 
+    How to expose S3 data to on-premises ? 
+      -AWS Storage Gateway 
+        Bridge between On-prem data and Cloud data in S3 
+    
+    AWS Storage Cloud Native Options: 
+      BLOCK: Amazon EBS, EC2 Instance store 
+      FILE: Amazon EFS 
+      OBJECT: Amazon S3, Glacier 
+
+  Shared Responsibility Model: 
+    AWS: 
+      -Infrastructure (Global security)
+      -Durability 
+      -Sustain concurrent loss of data in 2 facilities
+      -configuration and vulnerability analysis 
+      -Compliance validation 
+    User: 
+      -S3 Versioning 
+      -S3 Bucket Policies
+      -S3 Replication Setup 
+      -S3 Storage Classes 
+      -Data encryption at rest and in transit 
+      -Logging and monitoring 
+  
+  Summary: 
+    Buckets vs Objects: 
+      Global unique name 
+      Tied to a region 
+    S3 security: 
+      IAM Policy , S3 Bucket Policy, S3 Encryption 
+    S3 Websites:
+      Host static websites  
+    S3 Versioning: 
+      Similar to git technology, prevent accidental deletes 
+    S3 Access Logs:
+      Log requests made within S3 bucket  
+    S3 Replication: 
+      Same region , Cross region replication 
+      Must enable versioning 
+    S3 Storage Classes: 
+      Standard 
+      IA: 
+      IZ-IA: 
+      Intelligent:
+      Glacier:
+      Glacier Deep Archive:
+    S3 Lifecycle Rules:
+      Transition objects between storage classes 
+    S3 Glacier Vault Lock/Object Lock:
+      WORM (Write Once Read Many) - Objects never need to be deleted, only read 
+    Snow Family:
+      Data migration via physical device , Edge Computing
+    OpsHub:
+      Desktop app to manage AWS Snow Family devices 
+    Storage Gateway: 
+      Bridge between On premises storage to S3 storage
 
 Databases & Analytics:
    Relational Databases
@@ -204,14 +318,22 @@ Databases & Analytics:
    RDS Deployments: 
     Read Replicas, Multi AZs 
     Multi Region (Read replica)
-  
+      -Read replicas: 
+        Scale the read workload of DB
+        Writing is done to the main DB 
+      -Multi AZ: 
+        Failover in case of AZ outage(high availability)
+        Replication is done in a different AZ 
+        When Main DB fails, Data written to failover DB 
+      -Multi Region: 
+        Same as Read replicas 
+        But deployed in different regions 
+        Disaster recovery in case of region outage
+        Low latency 
+        Replication cost  
+
   AWS Elastic Cache :
    Managed Redis or Memcached 
-
-
-  AWS Shared responsibility for Databases & Cache:
-   AWS takes care of OS maintenance / patching, optimizations, setup,
-   configuration, monitoring, failure recovery and backup
 
   DynamoDB:
    Fully Managed Highly available with replication across 3 AZ
@@ -219,7 +341,7 @@ Databases & Analytics:
    serverless database
 
   DynamoDB Accelerator (DAX)
-   -In memory Cache
+   -In memory Cache for DynamoDB
   
   DynamoDB GLobal Tables 
    Accessible in mulitple regions 
@@ -228,11 +350,12 @@ Databases & Analytics:
   Redshift: 
    Based on PostGreSQL
    Used for OLAP (Online analytical processing)
-   Analytics and data warehousing 
+   Data Warehousing and Analytics 
+   Columnar storage of Data
 
   Amazon EMR: 
    Elastic Map Reduce 
-   Used for Big Data 
+   Hadoop Cluster: Big Data 
    Analyze and process vast amount of data 
    -data processing , machine learning, big data , web indexing 
     enables businesses, researchers, data analysts, and developers to easily 
@@ -242,6 +365,7 @@ Databases & Analytics:
    -Analyze data in S3 using serverless SQL query  
 
   Amazon Quicksight 
+   -Dashboards on Databases 
    -Serverless ML powered BI service to create interactive dashboards 
    -ML: Machine Learning, BI: Business Intelligence 
 
@@ -254,7 +378,7 @@ Databases & Analytics:
    -Social networking platforms 
 
   Amazon QLDB: 
-    Quantum Ledger Database 
+    Quantum Financial Ledger Database 
     -recording financial transactions 
     -review history of changes made in application data 
     -Immutable system (no entry can be removed or modified)
@@ -265,7 +389,7 @@ Databases & Analytics:
    -create decentralized blockchain 
 
   Amazon Glue: 
-   -ETL (Extract Data Load) service - Amazon managed 
+   -ETL (Extract Transform Load) service - Amazon managed 
    -Data catalogue service 
    -makes it easy for customers to prepare and load their data for analytics
    -AWS Glue Data Catalog is a central repository to store structural 
@@ -277,6 +401,31 @@ Databases & Analytics:
     The source database remains fully operational during the migration
     minimizing downtime to applications
 
+  AWS Shared responsibility for Databases & Cache:
+   AWS :
+    takes care of OS maintenance / patching, optimizations, setup,
+    configuration, monitoring, failure recovery and backup
+   User: 
+    If non managed Databases then 
+    Resilency, backup, patching, high availability, 
+    fault tolerance & scaling 
+
+
+  Summary: 
+    Relational Database: OLTP - RDS, Aurora (SQL) 
+    Diff btw Multi AZ, Read Replicas, Multi Region:
+    In memory Database: ElastiCache 
+    Key/Value Database: DynamoDB(serverless), DAX (cache for DynamoDB)
+    Warehouse- OLAP : Redshift (SQL)
+    Hadoop Cluster: EMR 
+    Athena: Query data on Amazon S3 (serverless SQL)
+    Quicksight: dashboards on your data (serverless) 
+    DocumentDB: Json-NoSQL DB (Aurora for MongoDB)
+    Amazon QLDB: Finacial Transaction Ledger
+    Amazon managed blockchain: Ethereum blockchain, Hyperledger fabric 
+    Glue: Managed ETL (Extract Transform Load)
+    Database Migration: DMS 
+    Neptune: Graph Database  
 
 Other Compute Services:
   What is Docker ?
@@ -311,6 +460,19 @@ Other Compute Services:
     -Thumbnails creation
     -Serverless CRON job
 
+  Summary: 
+    Docker: 
+    ECS: 
+    Fargate: 
+    ECR: 
+    Batch: 
+    Lightsail: 
+    Lamda: 
+      -Serverless 
+      -BillingLanguage Support:
+      -Invocation Time:
+      -Use Cases:
+      -API Gateway: 
 
 Deployments & Managing Infrastructure at Scale: 
     CloudFormation : 
@@ -534,7 +696,7 @@ Cloud Integration Section
     Not serverless
 
 
-  Cloud Monitoring Section: 
+Cloud Monitoring Section: 
 
     Amazon CloudWatch metrics: 
       Monitor usages of aws services 
@@ -604,7 +766,8 @@ Cloud Integration Section
     -AWS outages that directly impacts you 
 
 
-VPC Section: 
+VPC & Networking Section:
+
   For Exam: 
     VPC, Subnets, Internet Gateways, NAT Gateways
     Security Groups, Network ACLs, VPC Flow  
@@ -629,4 +792,33 @@ VPC Section:
     Direct Connect: direct physical private network btw on-prem & AWS
     Transit Gateway: Connect hundreds of VPCs and your on-premises data centers together
 
-Security & Complaince Section 
+Security & Compliance Section 
+
+AWS Architecting & Ecosystems: 
+
+  General Guiding Principals: 
+    Stop guessing capacity 
+    Test system at production scale 
+    Drive architecture using data 
+
+  Design Principles - Best Practices :
+    Scalability: 
+    Disposible Resources: 
+    Automation: 
+    Loose Coupling: 
+    Think Services, not Servers: 
+  
+  Well Architected Framework:
+    1. Operational Execellence 
+    2. Security 
+    3. Reliability 
+    4. Performance Efficiency 
+    5. Cost Optimization 
+
+  1. Operational Execellence: 
+    -Perform Operations as a Code 
+    -Annotate Documentation 
+    -Make frequent small reversible changes 
+    -Refine operations procedures frequently 
+    -Anticipate failures
+    -Learn from all failures  
