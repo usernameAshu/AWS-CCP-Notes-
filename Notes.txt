@@ -794,6 +794,186 @@ VPC & Networking Section:
 
 Security & Compliance Section 
 
+Machine Learning Section: 
+
+  Amazon Rekognition: 
+    Facial Recogtition 
+    Object recognition 
+    Content moderation 
+    Text detection 
+  
+  Amazon Transcribe:
+    Converts Speech to Text 
+
+  Amazon Polly: 
+    Converts Text to Speech 
+
+  Amazon Translate: 
+    natural and accurate language translation
+
+  Amazon Lex: 
+    Automatic Speech Recognition (ASR) to convert speech to text  
+    Recognize intent of the speech
+    Same tech that powers Alexa 
+
+  Amazon Connect: 
+    Virtual Contact Centre (Call centre) 
+
+    Use case:
+      Phone call -> Connect -> Lex -> Lamda -> CRM DB 
+
+  Amazon Comprehend: 
+    Natural Language Processing 
+    identify language od text 
+    Sentiment analysis 
+
+  Amazon SageMaker: 
+    Fully managed service to Build ML models 
+    For developers/Scientist 
+
+  Amazon Forcast: 
+    Uses ML to predict forcasting models 
+    Future forcast, Future financial planning 
+
+  Amazon Kendra: 
+    Document search service powered by Machine Learning 
+  
+  Amazon Personalize: 
+    Real time Personalize recommendation service 
+    Personalize product recommendation 
+
+  Summary: 
+    Rekognition: face detection, celbrity recognition
+    Transcribe: audio to text (subtitles)
+    Polly:   text to audio
+    Translate: translations 
+    Lex: conversational bots 
+    Connect: cloud contact centres 
+    Comprehend: natural language processing
+    SageMaker: build ML models 
+    Forecast: make highly accurate forcasts 
+    Kendra: ML-pwered search engine 
+    Personalize: personalized recommendations 
+
+
+Account Management , Billing and Support: 
+
+  AWS Organizations: 
+    Global Service
+    Main account is master account 
+    Manage multiple AWS accounts 
+    Cost Benefits: 
+      -Consolidated Billing - single payment 
+      -Aggregated usage - discounts 
+      -Pooling of reserved instances 
+    Automate AWS account creation 
+    Restrict account privileges using SCP 
+
+    Multi Account Strategies: 
+      Organizations Units (OU)
+      -Business Unit 
+      -Environment Lifecycle 
+    
+    Root OU (Master account) 
+      -> Dev OU (Account A)
+      -> Prod OU (Account B)
+          -> Finance OU (Account C)
+          -> HR OU (Account D)
+    
+    Service Control Policies (SCP)
+      -doesnot apply to Master Account 
+      -Applied to OU levels 
+  
+  AWS Control Tower:
+    setup and manage AWS organizations automatically 
+    No pay for Control tower -pay for underlying resources 
+    Get complaint info about the accounts 
+    Has a SSO 
+
+  Pricing Models in AWS Cloud: 
+    -Pay as you Go 
+    -Save when you reserve 
+    -Pay less by using more 
+    -Pay less as AWS grows
+  
+    Compute Pricing - EC2 :
+      On demand instances 
+        -Linux: pay per second
+        -Windows: pay per hour 
+      Reserved instances: 
+        -1 or 3 year commitment 
+      Spot instances: 
+        -Bid for unused capacity 
+      Dedicated hosts: 
+        -On demand 
+        -1 or 3 years commitment 
+
+    Compute Pricing - Lambds & ECS: 
+      Lambda: Pay per call & per duration 
+      ECS: Pay for underlying EC2 instances 
+      Fargate: Pay for vCPU and memory allocated 
+
+    Pricing : S3 Storage 
+
+    Pricing: EBS 
+
+    Database Pricing - RDS 
+
+    Content Delivery - CloudFront 
+
+    Networking Costs in AWS per GB 
+  
+  AWS Savings Plan: 
+    
+
+Other Services: 
+
+  Amazon WorkSpaces:
+    Alternate to VDI (Virtual Desktop Infrastructure)
+    Pay as you go, Hourly rates 
+
+  Amazon AppSream 2.0: 
+    Desktop Applciation streaming service 
+    Stream any particular app
+    No need to connect via VDI 
+  
+  Amazon Sumerian: 
+    Virtual Reality (VR)
+    Augmented Relaity (AR)
+
+  AWS IoT Core:
+    Internet Of Things 
+    Allows IoT device to connect to AWS cloud 
+
+  Amazon Elastic Transcoder: 
+    Converts Media Files in s3 bucket TO 
+      Media Files in formats requried by playback devices 
+
+  AWS Device Farm:
+    Run tests concurrently on multiple devices
+    Fully managed service that tests web and mobile apps 
+    To tests application on muktiple devices 
+
+  AWS Backup:
+    Cross region backup
+    Cross account backup
+
+  Disaster Recovery Services:
+    -Backup and restore
+
+  CloudEndure Disaster Recovery:
+    Protect most critical Databases 
+    Use CloudEndure services to backup yoour physical servers 
+
+  AWS DataSync: 
+    Move large amount of data from on premises to AWS Cloud
+    Replication tasks are incremental after the first load
+
+  AWS Fault Injection Simluator:
+    Chaos Engineering
+    Observing application performance by creating a disruption
+
+
 AWS Architecting & Ecosystems: 
 
   General Guiding Principals: 
@@ -822,3 +1002,48 @@ AWS Architecting & Ecosystems:
     -Refine operations procedures frequently 
     -Anticipate failures
     -Learn from all failures  
+
+  2. Security: 
+    -Implement a strong Identity
+    -Enable tracebility 
+    -Apply security at all layers 
+    -Automate security best practices 
+    -Protect data in transit and rest 
+    -Keep people away from data 
+    -Prepare for security events 
+  
+  3. Reliability: 
+    -Test recovery procedures 
+    -Automatically recover from failures 
+    -Scale horizantally to increase availability 
+    -Stop guessing capacity 
+    -Manage change in automation 
+
+  4. Performance Efficiency:
+    -Use advanced technology
+    -Go global in minutes
+    -Use serverless architecture
+    -Experiment more often
+    -MBe aware of all AWS services 
+
+  5. Cost Optimization: 
+    -Adopt consumption model - Pay only for what u use 
+    -Measure overall efficiency 
+    -Stop spending money on data centre operations 
+    -Analyze and attribute expenditure 
+    -Use managed and application level services to reduce 
+      cost of ownership 
+
+
+  AWS Well Architected Tool:
+    Review your architecture 
+    Adopt best architectural practices 
+    Free to use 
+
+  AWS Right Sizing: 
+    Tools: CloudWatch, Cost Explorer 
+          Trusted Advisor 
+
+  AWS Professional Services & Partner network 
+    -Global team of experts 
+    -Chosen member of APN 
