@@ -164,6 +164,7 @@ ELB & ASG - Elastic Load Balancing & Auto Scaling Groups
     Integrate with ELB 
 
 Amazon S3 service: 
+
    Store objects (files) in buckets (directories)
    Region specific
    Has proper naming convention 
@@ -792,7 +793,61 @@ VPC & Networking Section:
     Direct Connect: direct physical private network btw on-prem & AWS
     Transit Gateway: Connect hundreds of VPCs and your on-premises data centers together
 
-Security & Compliance Section 
+Security & Compliance Section
+  
+  AWS Shared Responsibility Model:  
+    AWS:
+      Security of the Cloud 
+      Protecting Infrastructure
+      Managed services like S3, DynamoDB, RDS etc. 
+    User: 
+      Security IN the cloud 
+      For EC2 instances - OS update/patches, firewall 
+      Encryption of app data 
+  
+  For RDS: 
+    AWS responsibility:
+      Manage underlying EC2 instance
+      Automate DB patching , OS patching 
+      Audit underlying instance 
+    User responsibility:
+      Security group 
+      DB encryption setting 
+  
+  For S3: 
+    AWS responsibility:
+      -Unlimited storage
+      -encryption 
+      -data privacy 
+    User responsibility:
+      -Bucket configuration 
+      -Bucket policy 
+      -IAM user and roles 
+      -enabling encryption 
+
+  DDOS protection: 
+    Distributed Denial of Services 
+    -Amazon WAF: (Web Application Firewall)
+    -Amazon Shield Standard:
+    -Amazon Shield Advanced (Premium) 
+
+  Penetration Testing 
+    Without prior approval from AWS customers can
+    carry out security assessment of certain services 
+
+  Data at Rest vs Data in Transit 
+    Rest: S3, EFs, EBS 
+    Transit: Data transferred over network 
+    Usage of encryption keys 
+  
+  AWS KMS (Key Management Service): 
+    -for encrypting data in varios AWS services 
+
+  AWS CloudHSM: 
+    -Hardware encryption keys 
+    
+  Summary: 
+
 
 Machine Learning Section: 
 
@@ -895,6 +950,14 @@ Account Management , Billing and Support:
     -Save when you reserve 
     -Pay less by using more 
     -Pay less as AWS grows
+
+    Free Services in AWS: 
+      IAM 
+      VPC 
+      Consolidated Biling 
+      Elastic Beanstalk
+      CloudFormation
+      Auto Scaling Group 
   
     Compute Pricing - EC2 :
       On demand instances 
@@ -913,18 +976,166 @@ Account Management , Billing and Support:
       ECS: Pay for underlying EC2 instances 
       Fargate: Pay for vCPU and memory allocated 
 
-    Pricing : S3 Storage 
+    Storage Pricing : S3  
+      Pay as per Storage class 
+      Number and size of objects 
+      Data Transfer OUT of the S3 region 
+      Number and type of requests 
+      S3 Transfer Acceleration 
+      Lifecycle transition 
 
-    Pricing: EBS 
+    Storage Pricing: EBS 
+      Storage volume in GB per month as provisioned 
+      Data transfer OUT oof EBD 
+      Snapshots : cost per GB per month 
 
     Database Pricing - RDS 
+      Per hour biling 
+      Database charecteristics 
+      Purchase type: On demand/Reserved type 
+      Backup Storage 
+      Additional Storage (per GB per month)
+      Number of requests (input/output) per month 
+      Deployment type (Single AZ/Multi AZ)
+      Data Transfer: OUT of RDS
 
     Content Delivery - CloudFront 
+      Since Global service - pricing different for each regions 
+      Aggregated bill- more usage more discounts 
+      Pay for Data transfer OUT 
+      Number of HTTP/HTTPS requests 
 
     Networking Costs in AWS per GB 
-  
+      -Free traffic IN to EC2 instance (AZ1)
+      -Free traffic EC2 - EC2 within same AZ 
+      -EC2 - EC2 across AZ via private IP ($0.01) , via Public IP ($0.02)
+      -EC2 - EC2 across region ($0.02) 
+      -Use Private IP instead of Public IP for good savings and better 
+        network performance 
+      -Use same AZ for maximum cost savings (trade-off with high availability)
+
+
   AWS Savings Plan: 
+    EC2 Savings Plan: 
+    Compute Savings Plan: 
+    AWS Cost Explorer Console 
+
+  AWS Compute Optimizer: 
+    -Reduce costs and 
+    -Improve performance by recommending optimal AWS resources
+
+  Billing and Costing Tools: 
+
+    Estimating costs: 
+      -TCO Calculator 
+      -Simple Monthly Calculator
+
+    Tracking Costs: 
+      -Billing Dashboards 
+      -Cost Allocation Tags 
+      -Cost and Usage Explorer
+      -Cost Explorer
+
+    Monitoring against Cost Plans:
+      -Billing Alarms 
+      -AWS Budgets 
+
+    Estimating Cost---------
+
+    AWS TCO (Total Cost of Ownership):
+      Estimate Cost savings when using AWS 
+      Compare cost of application in on-premise to AWS based on:
+        Server, Storage, Network, IT, Labor 
+
+    AWS Pricing Calculator/Simply Monthly Calculator
+      -Replaced by AWS Pricing Calculator
+      -Cost of an actual architecture solution 
     
+    Tracking Cost-------
+
+    AWS Billing Dashboard: 
+      -Higher level overview
+      -Shows cost spend for the month 
+      -Shows spends per service 
+    
+    Cost Allocation Tags: 
+      -To get cost by category 
+      -AWS generated tags 
+      -User defined tags 
+    
+    Cost and Usage Report: 
+      -most detailed report 
+      -most granular cost usage reports 
+
+    AWS Cost Explorer: 
+      -choose an optimal Savings Plan 
+      -Forcast usage upto 12 months based on previous uasage
+
+    Monitoring Cost------------
+
+    Biling Alarms 
+      Billing Data is stored in CloudWatch in us-east-1 
+      Billing data are for overall AWS regions 
+
+    AWS Budgets: 
+      Create Budget Send alarm when costs exceeds the budget 
+      Can send 5 SNS notifications 
+      2 Budgets are free then $0.02/Bday/Budget 
+      3 types: Usgae, Cost, Reserved 
+      Can filter by Service 
+
+  AWS Trusted Advisor: 
+    Analyze your AWS account and provided recommendation
+    based on 5 categories: 
+      -Cost Optimization
+      -Performance 
+      -Security 
+      -Fault Tolerance 
+      -Service Limits 
+  
+  AWS Support Plans: 
+    Basic Support: (incl for all AWS accounts)
+    Developer Support: 
+    Business Support:
+      + 24*7 access to Cloud Support Engineers  
+        Production System Impaired < 4hrs 
+        Production System Down < 1hr 
+        Programmatic support - API support 
+        Infrastructure Event Management (addtn fee)
+    Enterprise On-Ramp:
+      + Business critical system down < 30 mins  
+        Pool of TAM 
+        Conceirge Support Team 
+        Infrastructure Event Management (incl)
+    Enterprise Support: 
+      + Business critical system down < 15 mins 
+        Designated TAM 
+
+  Account Best Practices - Summary: 
+    Use AWS Organizations 
+    Use SCP to restrict acocutn power 
+    Easy setup for multiple accounts - AWS Control Tower 
+    Use Tags, & Cost Allocation Tags 
+    IAM guidelines 
+    AWS Config - compliance and audit trail 
+    CloudFormation to deploy stacks across regions 
+    AWS Trusted Advisor for account recommendation 
+    CloudTrail - record all API calls within the account 
+    If AWS account compromised: change root password, 
+          rotate all password , contact AWS support 
+
+  Billing - Summary 
+    AWS Compute Optimizer 
+    AWS TCO 
+    AWS Pricing calculator 
+    Billing Dashbaord 
+    COst Allocation tags 
+    AWS Cost and Usage reports 
+    AWS Cost explorer 
+    Billing Alarms 
+    AWS Budgets 
+    AWS Savings Plans  
+
 
 Other Services: 
 
