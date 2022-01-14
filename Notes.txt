@@ -126,6 +126,7 @@ EC2 Instance Storage:
 
 
 ELB & ASG - Elastic Load Balancing & Auto Scaling Groups 
+  
   Scalability & High Availability 
    High Availability - running instance in >= 2 AZs 
    Elasticity = auto scaling 
@@ -138,10 +139,15 @@ ELB & ASG - Elastic Load Balancing & Auto Scaling Groups
     NLB (network)-  TCP -L4
     CLB (Classic) 
 
-  Auto Scaling Gorup (ASG):
+  Auto Scaling Group (ASG) strategies :
    Manual Scaling
+    -update the size of ASG manually 
    Dynamic Scaling 
+    -respond to changing demand:
+      1.Simple/Step scaling 2. Target Tracking scaling 3. Scheduled Scaling
    Predictive Scaling 
+    -Uses ML to predict future traffic 
+    -Scaling happens before the event 
 
   Summary: 
   -High Availability vs Scalability vs Elasticity vs Agility:
@@ -201,10 +207,28 @@ Amazon S3 service:
               ]
             }
 
+  S3 Encryption: 
+    No Encryption
+    Server-Side encryption 
+      -server encrpts file after receiving it 
+    Client-Side encryption
+      -user encrpts the file before uploading it 
+
   AWS Snow Family: 
     Offline Devices to perform 
       Data Migration usages 
       Edge Computing purposes  
+
+  S3 storage classes: 
+    -S3 general purpose 
+    -S3 Infrequent Access (IA) 
+    -S3 One Zone IA 
+      Data stored in One AZ 
+    -S3 Intelligent Tiering 
+      -moves data between frequent/infrequent access  
+        based on usage patterns 
+    -Amazon Glacier 
+    -Amazon Glacier Deep archive 
 
     Snow Family Devices : 
       1. Snowcone 
@@ -846,7 +870,99 @@ Security & Compliance Section
   AWS CloudHSM: 
     -Hardware encryption keys 
     
+  AWS Certificate Manager (ACM):
+    -SSL/TLS Certificate
+    -In flight encryption 
+
+  AWS Secret Manager: 
+    -Rotation of secrets every X days 
+    -Integration with Amazon RDS 
+  
+  AWS Artifact: 
+    -Provides customer with AWS compliance and agreements 
+    -Artifact Agreements 
+    -Account agreements, Organization agreements 
+  
+  AWS GuardDuty: 
+    -Use to Protect AWS account using ML algorithms 
+    -Can be integrated with CloudTrail 
+    -threat detection service that continuously 
+        monitors for malicious activity 
+  
+  AWS Inspector: 
+    -Automate Security Assessments 
+    -Analyze running OS agains known threats 
+
+  AWS Config: 
+    -Auditing and Recording compliance of AWS resources 
+    -Store the config data in S3 buckets 
+    -Integrate with SNS topic 
+  
+  AWS Macie: 
+    -Mully managed data security and data privacy service 
+    -Uses ML and pattern matching to discover and protect 
+      sensitive data & Intellectual Property 
+    -Can be used to identify sensitive data in S3 bucket 
+
+  AWS Security Hub: 
+    -Central Security Tool 
+    -Manage security across several AES accounts 
+    -Enable AWS config 
+    -Analyzes data from :
+      Macie, GuardDuty, Inspector, Firewall Manager , System Manager 
+
+  AWS Detective: 
+    -Invesigate logs from AWS Security Hub 
+    -Root cause analysis 
+  
+  AWS Abuse:
+    -Report suspected/illegal activites to AWS abuse mail 
+    -abuse@amazonaws.com 
+
+  Root User Privileges: 
+  -Account Owner 
+  -Has complete access to all AWS resources 
+  -Actions by Root user: 
+    -Change account settings 
+    -Close AWS account 
+    -Change or Cancel AWS Support plan 
+    -Register as a Seller in Amazon Marketplace 
+  
+
   Summary: 
+    Shared Responsibility Model on AWS 
+    Sheild: DDos Protection 
+    WAF: 
+      -Firewall for web applications  
+    KMS: 
+      -Encryption keys managed by AWS 
+    CloudHSM: 
+      -Handware encryption, customer manager encryption keys 
+    AWS Certificate Manager: 
+      -for SSL/TLS certificates 
+    Aritifact: 
+      -Get access to compliance reports (PCI,ISO)
+    GuardDuty: 
+      -Find malicious behavior with CloudTrail logs 
+    Inspector: (for EC2 only)
+      -Find vulnerability within EC2 instance 
+    Config: 
+      -Track config changes and compliance against rules 
+    Macie: 
+      -Find sesnitive data (Intellectual Property) in S3 bucket 
+    CloudTrail: 
+      -Track API calls made by users within account 
+    AWS Security Hub: 
+      -Gather security findings accross multiple AWS accounts 
+    Amazon Detective: 
+      -find root cause of security issues 
+    AWS Abuse: 
+      -report illegal AWS usages 
+    Root User Privileges:
+      -Change account settings 
+      -Close AWS account 
+      -Change or Cancel AWS Support plan 
+      -Register as a Seller in Amazon Marketplace 
 
 
 Machine Learning Section: 
@@ -1136,6 +1252,40 @@ Account Management , Billing and Support:
     AWS Budgets 
     AWS Savings Plans  
 
+Advanced Identity: 
+
+  AWS Security Token Service (STS): 
+    -Create temporary, limited privileges credentials 
+      to access AWS resources 
+    -Same concept as Oauth token identification 
+
+  Amazon Cognito 
+    -Identify your Web and Mobile app users 
+    -millions of users 
+    -Login with Google/Facebook
+    -lets you add user sign-up, sign-in, and access control 
+      to your web and mobile apps quickly and easily.
+
+  Directory Services: 
+    Integrate Microsoft Active Directory in AWS 
+    Centralized storage of Username/password
+
+  AWS Directory Services: 
+    -AWS Managed Microsoft AD 
+    -AD connector (Proxy)
+    -Simple AD (managed AWS active directory)
+
+  AWS SSO (single sign on):
+    Integrated with AWS organizations 
+    Can be integrated with on prem Active Directory 
+
+  Summary: 
+    IAM: Identity and Access management within AWS account 
+    Organizations: manage multiple AWS accounts 
+    STS: 
+    Cognito:
+    Directory Services: 
+    Single Sign On(SSO):
 
 Other Services: 
 
