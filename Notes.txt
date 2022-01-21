@@ -12,7 +12,11 @@ What is Cloud Computing ?
           Heroku, Google App engine 
     3. SaaS (Software as a Service) 
       ex: Gmail, Zoom, AWS Machine Learning 
-    
+  
+  AWS Availability Zones :
+    -Each region has min 2 AZs 
+    -Each AZ has 1 or more data centres 
+
   Pricing Model: 
     -Compute: Pay for compute time 
     -Storage: Pay for data stored in cloud 
@@ -470,12 +474,13 @@ Other Compute Services:
 
   ECR: Elastic Container Resgistry 
   -Private docker registry in AWS 
-  -Fargate creates container from images in Fargate 
+  -Fargate creates container from images in ECR 
 
   Lamda:
   -Serverless 
   -pay per calls
   -pay per duration 
+  -can run for a maximum duration of 15 mins 
   -Function as a Service
   -Event driven 
   -Seamless scaling, reactive 
@@ -510,6 +515,7 @@ Deployments & Managing Infrastructure at Scale:
       -load balancer (ELB) 
 
       -Infrastructure as a code 
+      -yaml format
       -Easier cost analysis 
 
       Cloud formation stack designer : Gives a diagramatic presentation of architecture 
@@ -517,7 +523,8 @@ Deployments & Managing Infrastructure at Scale:
 
     AWS Cloud Development Kit (CDK) 
       Deploy Cloud as Infrastructure as a Code using programming language 
-      Then use CDK CLI to convert into a CloudFormation template 
+        -Java, Python, NodeJS
+      Then use CDK CLI to convert into a CloudFormation template (JSON/YAML)
       This helps to use type safety in AWS 
 
     AWS Beanstalk:
@@ -580,17 +587,18 @@ Deployments & Managing Infrastructure at Scale:
         Elastic Beanstalk
         EC2   
 
-    AWS SSM Systems Manager
+    AWS Systems Manager (SSM)
       Manage EC2, On-Premise infra on scale 
       Patch EC2 instances 
       Run commands across all servers 
 
-    SSM Session Manager :
-      For secure shell 
+    AWS System Manager(SSM)- Session Manager:
+      For secure shell on EC@ or on-prem servers
 
     AWS OpsWork: 
       Managed Chef & Puppet 
       Works with EC2 & On-Premise VM 
+      Server configuration 
 
 
 Global Infrastructure Section:
@@ -616,16 +624,16 @@ Global Infrastructure Section:
    Managed DNS service
    Process flow: 
     Web Browser --->Makes DNS Request for that domain --> Route 53
-    Route 53 --->Sends back IP address for that domain --> Web Browser 
+              <---Sends back IP address for that domain -- 
 
-    Web Browser --->Makes HTTP Request on that IP address--> Application Server
-    Application Server--->HTTP Response--> Web Browser
+    Web Browser --->Makes HTTP Request on that IP --> Application Server
+                <------HTTP Response----------
    Host (Domain): myapp.mydomain.com
    Record: hostname to IP 
 
    Routing Policies: 
     Simple Routing Policy : No Health Checks 
-    Weighter Routing Policy: Based on priority assigned 
+    Weighted Routing Policy: Based on priority assigned 
     Latency Routing Policy : Based on geographical location 
     Failover Routing Policy: Based on Primary & Failover server (Disaster Recovery)
 
@@ -635,7 +643,7 @@ Global Infrastructure Section:
   AWS CloudFront 
     Content Delivery Newtork (CDN) 
     Improves Read performance , content is cached at edge 
-    DDOS protection 
+    DDOS protection -Integration with WAF and Shield 
     Use AWS Global Network 
     Which services does CloudFront integrate to protect against web attacks?
      WAF & Shield 
@@ -654,6 +662,7 @@ Global Infrastructure Section:
     Client will connect to Edge location
     Edge location will redirect to ALB 
     Use AWS Global Network
+    Integrate Shield for DDos Protection 
 
   AWS Outposts: 
     Hybrid Cloud use cases 
@@ -676,7 +685,7 @@ Global Infrastructure Section:
     Local Zones are closer than AZs (Availability Zones)
 
   Global Application architecture:
-    Multi Regon, Active-Passive : Active(Read/Write), Passive(read)
+    Multi Region, Active-Passive : Active(Read/Write), Passive(read)
     Multi Region, Active-Active: 
 
 
@@ -736,13 +745,25 @@ Cloud Monitoring Section:
   Amazon CloudWatch Alarms: 
     Trigger notification for any metric 
     Alarm action: 
+      -Auto Scaling 
+      -restart a EC2 instance 
+      -SNS notifications 
 
   Amazon CloudWatch Logs:
+    Can collect log from: 
+      Elastic Beanstalk 
+      ECS: collection from containers 
+      AWS Lambda 
+      CloudTrail 
+      Route53
+      EC2 : (via CloudWatch Log agent)
+      On Premises : (via CloudWatch Log agent)
     Enable Real time monitoring of logs 
     CloudWatch log agents : EC2 instances/on-prem servers
 
   Amazon CloudWatch Events: 
-    Schedule Pattern: (Cron job) 
+    React to event happening within AWS infra services 
+    Schedule Pattern: (Serverless Cron job) 
     Event Pattern : IAM user sign in event 
     Trigger : emails 
 
@@ -756,6 +777,7 @@ Cloud Monitoring Section:
   AWS CloudTrail: 
     Governance, Compliance, Audit of AWS account
     Hisotry of events made within AWS account 
+    Enabled by default
     Event Types: 
       Management Events 
       Data Events 
@@ -781,17 +803,81 @@ Cloud Monitoring Section:
     Supports Java & Python 
 
   AWS Status - Service Health Dashboard:
-    -UI to see service health of AWS services 
+    -UI to see service health of all AWS services 
     -Shows for all Regions 
 
   AWS Personal Health Dashboard: 
-    -Alerts & recommendations 
+    -Alerts & recommendations about services you deployed
     -For events that Affects you
     -phd.aws.amazon.com/ 
     -AWS outages that directly impacts you 
 
+  Exam Alert:
+
+  You may see use-cases asking you to select one of CloudWatch vs CloudTrail vs Config. Just remember this thumb rule -
+  Think resource performance monitoring, events, and alerts; think CloudWatch.
+  Think account-specific activity and audit; think CloudTrail.
+  Think resource-specific change history, audit, and compliance; think Config.
 
 VPC & Networking Section:
+
+  VPC & Subnets Primer:
+    VPC (Virtual Private Cloud) - Region Level - across Multiple AZ
+      -Subnets - each for AZ 
+        -Private Subnet (not accessible from Internet)
+        -Public Subnet  (accessible from Internet)
+        Route tables - Define access to internet from Subnets 
+        EC2 instances can be launched from Subnet
+  
+  Internet Gateway: 
+    Connects Public Subnet's EC2 instance to Internet 
+  
+  NAT Gateway: 
+    Connects Private Subnet's EC2 instance to Internet 
+  
+  Network ACL and Security Groups: 
+    -Network ACL (NACL):
+      Present at Subnet level 
+      Firewall which controls traffic from and to the subnet
+      Can have ALLOW and DENY rules 
+      Stateless 
+    
+    -Security Groups: 
+      Present at EC2 instance level 
+      Firewall which controls traffic from and to EC2 instances 
+      Can only have ALLOW rules 
+      Stateful 
+  
+  VPC Flow Logs: 
+    logs network traffic logs 
+    logs can be exported to CloudWatch logs 
+
+  VPC Peering:
+    Connect 2 VPC privately using AWS network 
+    IP address range donot overlap 
+
+  VPC Endpoints: 
+    To connect to AWS services using a private network instead of the public network 
+    For Enhanced Security of AWS services
+    Two types 
+    -VPC Endpoint Gateway 
+    -VPC Enpoint Interface 
+  
+  Direct Connect: (DX)
+    -Hybrid Cloud use case 
+    -Goes over private network 
+    -Establish a physical connection 
+    -Takes Time to setup 
+
+  Site to Site VPN: 
+    -Hybrid Cloud case 
+    -Goes over Public Internet 
+    -Connect on-premise VPN to AWS
+    -Faster setup 
+    -Customer Gateway(on prem) --> Virtual Private Gateway (AWS)
+
+  Transit Gateway: 
+    Connect hundreds/thousands of VPC with on-premise data centers 
 
   For Exam: 
     VPC, Subnets, Internet Gateways, NAT Gateways
@@ -811,7 +897,7 @@ VPC & Networking Section:
     NACL: Stateless subnet rules for inbound/outbound traffics
     Security Groups: Stateful, operates at EC2 level
     VPC Peering: Connects 2 VPCs with non-overlapping IP ranges 
-    VPC Endpoints: Provides private access to AWS Services within VPC 
+    VPC Endpoints: Provides private access to AWS Services within VPC (DynamoDB,S3)
     VPC Flow Logs: network traffic logs 
     Site-to-Site VPN: VPN over public internet between on-premises & AWS
     Direct Connect: direct physical private network btw on-prem & AWS
@@ -852,8 +938,16 @@ Security & Compliance Section
   DDOS protection: 
     Distributed Denial of Services 
     -Amazon WAF: (Web Application Firewall)
+      Monitors web requests forwarded to below services. 
+      CloudFront, API Gateway, Application Load Balancers
+      Charges for Number of Web requests received and number of Web ACL created 
     -Amazon Shield Standard:
+      It is activated on all AWS services by default 
     -Amazon Shield Advanced (Premium) 
+      It covers the below services: 
+      EC2, ELB, CloudFront, Global Accelerator, Route 53
+    -CloudFront and Route 53:
+      provides attack mitigation at edge 
 
   Penetration Testing 
     Without prior approval from AWS customers can
@@ -869,6 +963,15 @@ Security & Compliance Section
 
   AWS CloudHSM: 
     -Hardware encryption keys 
+  
+  CMK: Customer Managed Keys 
+    Customer Managed CMK: 
+      -Created, managed and used by Customer 
+    AWS managed CMK 
+      -Created managed used by AWS on customer's behalf 
+    AWS owned CMK 
+      -AWS owns the keys , customer can't see the keys 
+    CloudHSM keys 
     
   AWS Certificate Manager (ACM):
     -SSL/TLS Certificate
@@ -891,7 +994,8 @@ Security & Compliance Section
   
   AWS Inspector: 
     -Automate Security Assessments 
-    -Analyze running OS agains known threats 
+    -Analyze running OS vulnerability against known threats 
+    -Track configuration changes 
 
   AWS Config: 
     -Auditing and Recording compliance of AWS resources 
@@ -1064,6 +1168,12 @@ Account Management , Billing and Support:
   Pricing Models in AWS Cloud: 
     -Pay as you Go 
     -Save when you reserve 
+      Reservations are available for 
+        EC2 Reserved Instances, 
+        DynamoDB Reserved Capacity, 
+        ElastiCache Reserved Nodes, 
+        RDS Reserved Instance, 
+        Redshift Reserved Nodes
     -Pay less by using more 
     -Pay less as AWS grows
 
@@ -1208,6 +1318,9 @@ Account Management , Billing and Support:
       -Security 
       -Fault Tolerance 
       -Service Limits 
+    
+    Basic and Developer support plan get access to Core Trusted advisor checks .
+    Business and Enterprise support plans have Full access to Trusted advisor checks 
   
   AWS Support Plans: 
     Basic Support: (incl for all AWS accounts)
@@ -1217,11 +1330,13 @@ Account Management , Billing and Support:
         Production System Impaired < 4hrs 
         Production System Down < 1hr 
         Programmatic support - API support 
+        Guidance to contextual use cases 
         Infrastructure Event Management (addtn fee)
     Enterprise On-Ramp:
       + Business critical system down < 30 mins  
         Pool of TAM 
         Conceirge Support Team 
+        Consultatie review and guidance based on apps 
         Infrastructure Event Management (incl)
     Enterprise Support: 
       + Business critical system down < 15 mins 
@@ -1408,3 +1523,23 @@ AWS Architecting & Ecosystems:
   AWS Professional Services & Partner network 
     -Global team of experts 
     -Chosen member of APN 
+
+Serverless Services in AWS: 
+  
+  Compute: 
+    -AWS Lambda 
+    -AWS Fargate 
+  
+  Application Integration:
+    -EventBridge
+    -Step Function
+    -SQS 
+    -SNS 
+    -Amazon API Gateway 
+    -AppSync
+  
+  Data Store: 
+    -Amazon S3 
+    -Amazon DynamoDB
+    -Amazon RDS proxy 
+    -Amazon Aurora Serverless  
