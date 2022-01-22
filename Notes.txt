@@ -176,21 +176,38 @@ ELB & ASG - Elastic Load Balancing & Auto Scaling Groups
 Amazon S3 service: 
 
    Store objects (files) in buckets (directories)
+   Bucket - globally unique name for all accounts 
+   Infinite Scaling 
    Region specific
    Has proper naming convention 
    Objects have Key-Value 
    Key is the object path , Value is the object data 
    Metadata - list of key/value pairs 
 
-  Create Bucket 
+  S3 Bucket 
    -bucket name has to be globally unique
    Buckets are region specific  
+   Objects are stored in Buckets 
+
+  S3 object:
+    Max object size: 5 TB 
+    Objects Greater than 5 GB has to be upload in multi-part 
+    Object location -> key 
+    key is the FULL path: 
+    -s3://my-bucket/myfile.txt  
+        -> key: myfile.txt
+    -s3://my-bucket/my_folder/my_subgoler/myfile.txt 
+        -> key: my_folder/my_subgoler/myfile.txt
+
 
   S3 Security:
-   User Based 
-   Resource Based 
+    User Based 
+    -IAM policies : Which API calls should be allowed for a specific IAM user 
+    Resource Based 
+    -Bucket Policies 
+    User responsible for S3 encryption 
 
-   Bucket Policy:
+  Bucket Policy:
    TO make objects accessible to the public internet 
    We need to turn off "Block public access"
    And define a bucket policy :
@@ -212,17 +229,31 @@ Amazon S3 service:
             }
 
   S3 Encryption: 
+    User is reponsible for encryption of files 
+    Types: 
     No Encryption
     Server-Side encryption 
       -server encrpts file after receiving it 
     Client-Side encryption
       -user encrpts the file before uploading it 
 
-  AWS Snow Family: 
-    Offline Devices to perform 
-      Data Migration usages 
-      Edge Computing purposes  
+  S3 Websites: 
+    S3 can host static websites and accessible on www 
+    User gets 403 (Forbidden) if bucket policy doen't allow public reads 
 
+  S3 Versioning:
+    Git lke versioning on objects at bucket level 
+
+  S3 Server Access Logs: 
+    For audit process 
+    Log all access requests made to S3 bucket 
+    Access logs to 1 S3 bucket will be logged to another S3 bucket 
+
+  S3 Replication : 
+    Types: 
+      Cross Region Replication 
+      Same Region Replication 
+  
   S3 storage classes: 
     -S3 general purpose 
     -S3 Infrequent Access (IA) 
@@ -233,6 +264,22 @@ Amazon S3 service:
         based on usage patterns 
     -Amazon Glacier 
     -Amazon Glacier Deep archive 
+  
+  S3 Durability and Availability: 
+    High Durability 
+    -Loss of single object once in 10,000 years  
+    Availability:
+    -S3 Standard has 99.99% availability
+    -it will not be availble for 53 minutes in a year 
+    -Vaires depending on storage classes 
+
+  AWS Snow Family: 
+    If Data transfer takes over a week. 
+    Offline Devices to perform 
+      Data Migration usages in/out of AWS 
+      Edge Computing purposes
+
+    Edge computing: Snowball Edge, Snowcone 
 
     Snow Family Devices : 
       1. Snowcone 
@@ -251,7 +298,7 @@ Amazon S3 service:
          -For transfering > 10 PB of data
 
       AWS Datasync: 
-        To transfer Data online from Snowball devices 
+        To transfer Data online to Snowball devices 
 
     What is Edge Computing ?
       -Process Data at remote location with no Internet connectivity
@@ -276,6 +323,11 @@ Amazon S3 service:
       BLOCK: Amazon EBS, EC2 Instance store 
       FILE: Amazon EFS 
       OBJECT: Amazon S3, Glacier 
+    
+    Native On-prem Servers has these Storage Types:
+      -File
+      -Volume 
+      -Tape 
 
   Shared Responsibility Model: 
     AWS: 
@@ -476,12 +528,19 @@ Other Compute Services:
   -Private docker registry in AWS 
   -Fargate creates container from images in ECR 
 
+  Serverless: 
+    Just deploy code 
+    No need to provision servers or manage servers 
+    There are servers that End users dont have to manage. 
+    Example: 
+      S3, DynamoDB, Fargate, Lambda 
+
   Lamda:
   -Serverless 
   -pay per calls
   -pay per duration 
   -can run for a maximum duration of 15 mins 
-  -Function as a Service
+  -Function as a Service (FaaS)
   -Event driven 
   -Seamless scaling, reactive 
   -supports multiple programming language 
@@ -489,6 +548,21 @@ Other Compute Services:
    Use case:
     -Thumbnails creation
     -Serverless CRON job
+
+  Amazon API Gateway: 
+    -Build Serverless HTTP/S API 
+    -Client --> API Gateway --> Lambda --> DB 
+    -Supports security, user authentication, API throttling 
+
+  AWS Batch: 
+    -Serverless 
+    -Efficeintly run 100,000s of computing batch jobs in AWS 
+    -it will dynamically launch EC2 instances or Spot instances 
+  
+  AWS Lightsail: 
+    People with little cloud experience 
+    To get started quickly with predictive pricing 
+    High availability but No autoscaling 
 
   Summary: 
     Docker: 
@@ -543,7 +617,7 @@ Deployments & Managing Infrastructure at Scale:
 
     AWS CodeDeploy: 
       Deploy applications automatically 
-      Works with EC2 instaces.
+      Works with EC2 instances.
       Works with On-Premises servers 
       Hybrid service 
       Server/Instances must be provisioned 
@@ -937,53 +1011,72 @@ Security & Compliance Section
 
   DDOS protection: 
     Distributed Denial of Services 
-    -Amazon WAF: (Web Application Firewall)
-      Monitors web requests forwarded to below services. 
-      CloudFront, API Gateway, Application Load Balancers
-      Charges for Number of Web requests received and number of Web ACL created 
     -Amazon Shield Standard:
       It is activated on all AWS services by default 
     -Amazon Shield Advanced (Premium) 
       It covers the below services: 
       EC2, ELB, CloudFront, Global Accelerator, Route 53
+    -Amazon WAF: (Web Application Firewall)
+      Monitors web requests forwarded to below services. 
+      CloudFront, API Gateway, Application Load Balancers
+      Charges for Number of Web requests received and number of Web ACL created 
     -CloudFront and Route 53:
       provides attack mitigation at edge 
+    -Leverage Auto scaling under attack 
 
   Penetration Testing 
     Without prior approval from AWS customers can
     carry out security assessment of certain services 
+    Cannot Perform DDoS attack on AWS services 
 
-  Data at Rest vs Data in Transit 
-    Rest: S3, EFs, EBS 
-    Transit: Data transferred over network 
-    Usage of encryption keys 
-  
-  AWS KMS (Key Management Service): 
-    -for encrypting data in varios AWS services 
+  Encryption: 
+    Encryption of Data at Rest vs Data in Transit 
+      Rest: S3, EFs, EBS 
+      Transit: Data transferred over network 
 
-  AWS CloudHSM: 
-    -Hardware encryption keys 
+    AWS KMS (Key Management Service): 
+      -for encrypting data in various AWS services 
+      -we don't have access to keys 
+      -AWS manages the keys 
+        Default Encrypted services: 
+          -CloudTrain Logs 
+          -Glacier 
+          -Storage Gateway 
+        Encryption opt-in services: 
+          -S3 bucket 
+          -EFS
+          -EBS
+          -RDS
+          -Redshift
+
+    AWS CloudHSM: 
+      -AWS provisions Hardware encryption 
+      -End user manages the encryption keys  
   
-  CMK: Customer Managed Keys 
+  Customer Master keys (CMK) 
     Customer Managed CMK: 
       -Created, managed and used by Customer 
     AWS managed CMK 
       -Created managed used by AWS on customer's behalf 
+      -End users don't have access to it 
     AWS owned CMK 
       -AWS owns the keys , customer can't see the keys 
-    CloudHSM keys 
+      -End users dont' have access to view it 
+    CloudHSM keys (custom keystore)
+      -Keys generated from you own CloudHSM hardware 
     
   AWS Certificate Manager (ACM):
-    -SSL/TLS Certificate
-    -In flight encryption 
+    -SSL/TLS Certificate (provision, manage and deployed by AWS)
+    -In flight encryption (HTTPS endpoints) 
 
   AWS Secret Manager: 
     -Rotation of secrets every X days 
     -Integration with Amazon RDS 
+    -Secrets will be encrypted using KMS 
   
   AWS Artifact: 
     -Provides customer with AWS compliance and agreements 
-    -Artifact Agreements 
+    -Artifact Agreements (HIIPA, BIA)
     -Account agreements, Organization agreements 
   
   AWS GuardDuty: 
@@ -993,24 +1086,26 @@ Security & Compliance Section
         monitors for malicious activity 
   
   AWS Inspector: 
-    -Automate Security Assessments 
+    -Automate Security Assessments on EC2 instances 
     -Analyze running OS vulnerability against known threats 
     -Track configuration changes 
 
   AWS Config: 
-    -Auditing and Recording compliance of AWS resources 
-    -Store the config data in S3 buckets 
+    -Recording configuration changes 
+    -For Auditing and Recording compliance of AWS resources 
+    -Store the config data in S3 buckets (analyze by Athena)
     -Integrate with SNS topic 
   
   AWS Macie: 
     -Mully managed data security and data privacy service 
     -Uses ML and pattern matching to discover and protect 
-      sensitive data & Intellectual Property 
+      sensitive data & Intellectual Property & Peronally Identifiable Information (PII)
     -Can be used to identify sensitive data in S3 bucket 
 
   AWS Security Hub: 
     -Central Security Tool 
-    -Manage security across several AES accounts 
+    -Manage security across several AWS accounts 
+    -Integrated Dashboard 
     -Enable AWS config 
     -Analyzes data from :
       Macie, GuardDuty, Inspector, Firewall Manager , System Manager 
@@ -1030,7 +1125,7 @@ Security & Compliance Section
     -Change account settings 
     -Close AWS account 
     -Change or Cancel AWS Support plan 
-    -Register as a Seller in Amazon Marketplace 
+    -Register as a Seller in Amazon Marketplace in Reserved Instance Marketplace 
   
 
   Summary: 
@@ -1158,6 +1253,11 @@ Account Management , Billing and Support:
     Service Control Policies (SCP)
       -doesnot apply to Master Account 
       -Applied to OU levels 
+      -Whitelist or Blacklist IAM Actions 
+
+    AWS Organization: Consolidating Billing 
+      -Combined Usages : share volume pricing, share Reserved Instances 
+      -One Bill 
   
   AWS Control Tower:
     setup and manage AWS organizations automatically 
@@ -1167,6 +1267,8 @@ Account Management , Billing and Support:
 
   Pricing Models in AWS Cloud: 
     -Pay as you Go 
+      Start, Delete resources when necessary 
+
     -Save when you reserve 
       Reservations are available for 
         EC2 Reserved Instances, 
@@ -1174,8 +1276,12 @@ Account Management , Billing and Support:
         ElastiCache Reserved Nodes, 
         RDS Reserved Instance, 
         Redshift Reserved Nodes
+
     -Pay less by using more 
+      Volume based discounts 
+
     -Pay less as AWS grows
+      Discounts as AWS expands in market 
 
     Free Services in AWS: 
       IAM 
@@ -1187,15 +1293,19 @@ Account Management , Billing and Support:
   
     Compute Pricing - EC2 :
       On demand instances 
+        -Minimum billing time: 60s
         -Linux: pay per second
         -Windows: pay per hour 
       Reserved instances: 
+        -75% compared to On demand 
         -1 or 3 year commitment 
       Spot instances: 
+        -90% discount compared to On-demand 
         -Bid for unused capacity 
       Dedicated hosts: 
         -On demand 
         -1 or 3 years commitment 
+      AWS Savings Plan 
 
     Compute Pricing - Lambds & ECS: 
       Lambda: Pay per call & per duration 
@@ -1204,15 +1314,18 @@ Account Management , Billing and Support:
 
     Storage Pricing : S3  
       Pay as per Storage class 
-      Number and size of objects 
+      Number and size of objects
+      Number and Type of Request in/out of S3  
       Data Transfer OUT of the S3 region 
       Number and type of requests 
       S3 Transfer Acceleration 
       Lifecycle transition 
+    
+    Same applies for EFS 
 
     Storage Pricing: EBS 
       Storage volume in GB per month as provisioned 
-      Data transfer OUT oof EBD 
+      Data transfer OUT of EBS 
       Snapshots : cost per GB per month 
 
     Database Pricing - RDS 
@@ -1234,8 +1347,8 @@ Account Management , Billing and Support:
     Networking Costs in AWS per GB 
       -Free traffic IN to EC2 instance (AZ1)
       -Free traffic EC2 - EC2 within same AZ 
-      -EC2 - EC2 across AZ via private IP ($0.01) , via Public IP ($0.02)
-      -EC2 - EC2 across region ($0.02) 
+      -EC2 - EC2 across Inter-AZs via private IP ($0.01) , via Public IP ($0.02)
+      -EC2 - EC2 across Inter-region ($0.02) 
       -Use Private IP instead of Public IP for good savings and better 
         network performance 
       -Use same AZ for maximum cost savings (trade-off with high availability)
@@ -1243,23 +1356,30 @@ Account Management , Billing and Support:
 
   AWS Savings Plan: 
     EC2 Savings Plan: 
-    Compute Savings Plan: 
-    AWS Cost Explorer Console 
+      -72% savings compared to On demand 
+      -Commit for 1/3 years, instance family, $ to be spent per hour 
+      -reserved instances
+    Compute Savings Plan:
+      -66% discounts compared to On-demand 
+      -Compute Options: EC2, Fargate, Lambda  
+  
+  Setup savings plan in AWS Cost Explorer Console 
 
   AWS Compute Optimizer: 
-    -Reduce costs and 
-    -Improve performance by recommending optimal AWS resources
+    -Reduce costs and Improve performance 
+    -by recommending optimal AWS resources
+    -EC2, Auto Scaling Groups, EBS, Lambda 
 
   Billing and Costing Tools: 
 
     Estimating costs: 
       -TCO Calculator 
-      -Simple Monthly Calculator
+      -Simple Monthly Calculator/ AWS Pricing Calculator
 
     Tracking Costs: 
       -Billing Dashboards 
       -Cost Allocation Tags 
-      -Cost and Usage Explorer
+      -Cost and Usage Reports 
       -Cost Explorer
 
     Monitoring against Cost Plans:
@@ -1271,27 +1391,32 @@ Account Management , Billing and Support:
     AWS TCO (Total Cost of Ownership):
       Estimate Cost savings when using AWS 
       Compare cost of application in on-premise to AWS based on:
-        Server, Storage, Network, IT, Labor 
+        Server, Storage, Network, IT Labor 
 
     AWS Pricing Calculator/Simply Monthly Calculator
       -Replaced by AWS Pricing Calculator
       -Cost of an actual architecture solution 
+      -It tells you Total monthly most and Upfront cost(1/3 years)
     
     Tracking Cost-------
 
     AWS Billing Dashboard: 
       -Higher level overview
-      -Shows cost spend for the month 
+      -Shows cost spend for the current month 
       -Shows spends per service 
     
     Cost Allocation Tags: 
       -To get cost by category 
       -AWS generated tags 
       -User defined tags 
+
+      Tags and Resource Groups: 
+        -Resources can be Tagged 
+        -Resource Groups can have multiple Tags 
     
     Cost and Usage Report: 
       -most detailed report 
-      -most granular cost usage reports 
+      -most granular cost usage reports (hoursly/Daily)
 
     AWS Cost Explorer: 
       -choose an optimal Savings Plan 
@@ -1307,7 +1432,7 @@ Account Management , Billing and Support:
       Create Budget Send alarm when costs exceeds the budget 
       Can send 5 SNS notifications 
       2 Budgets are free then $0.02/Bday/Budget 
-      3 types: Usgae, Cost, Reserved 
+      3 types: Usage, Cost, Reservation 
       Can filter by Service 
 
   AWS Trusted Advisor: 
@@ -1319,32 +1444,73 @@ Account Management , Billing and Support:
       -Fault Tolerance 
       -Service Limits 
     
-    Basic and Developer support plan get access to Core Trusted advisor checks .
+    Basic and Developer support plan get access to 7 Core Trusted advisor checks .
+      -S3 Bucket permission 
+      -Security Groups 
+      -IAM Permission 
+      -MFA on Root Account 
+      -EBS Public snapshots 
+      -RDS Public Snapshots 
+      -Service Limits 
+
     Business and Enterprise support plans have Full access to Trusted advisor checks 
+      -Important to know check 
+      :Programmatic Access to AWS Support API 
   
   AWS Support Plans: 
     Basic Support: (incl for all AWS accounts)
+
     Developer Support: 
+      + Basic Support Plan 
+        Business hours email access to Cloud Support Engineers 
+        Unlimited Cases/1 contact 
+        Architectural Guidance: General 
+        Case Severity: 
+          General Guidance < 24 business hours 
+          System Impaired < 12 business hours 
+
     Business Support:
-      + 24*7 access to Cloud Support Engineers  
-        Production System Impaired < 4hrs 
-        Production System Down < 1hr 
-        Programmatic support - API support 
-        Guidance to contextual use cases 
+        (for production workload)
+      + Developer Support Plan 
+        24*7 phone/chat/email access to Cloud Support Engineers  
+        Programmatic access  - AWS Support API
+        Unlimited cases/Unlimited contacts  
+        Architectural Guidance: 
+          Guidance to contextual use cases 
         Infrastructure Event Management (addtn fee)
+        Case Severity:  
+          General Guidance < 24 business hours 
+          System Impaired < 12 business hours 
+          Production System Impaired < 4hrs 
+          Production System Down < 1hr 
+
     Enterprise On-Ramp:
-      + Business critical system down < 30 mins  
+      + Business Support plan features  
         Pool of TAM 
         Conceirge Support Team 
         Consultatie review and guidance based on apps 
         Infrastructure Event Management (incl)
+        Architectural Guidance:
+          Consultative review Based on your applications 
+        Case Severity/Response Time: 
+          + Same as Business Plan 
+            Business Critical systems down: < 30 mins
+
     Enterprise Support: 
-      + Business critical system down < 15 mins 
+      + Business Support plan features 
         Designated TAM 
+        Conceirge Support team 
+        Infrastructure Event Management 
+        Well Architected & Operational Reviews
+        Architectural Guidance:
+          Consultative review Based on your applications  
+        Case Severity/Response Time: 
+          + Same as Business Plan 
+            Business Critical systems down: <15 mins 
 
   Account Best Practices - Summary: 
     Use AWS Organizations 
-    Use SCP to restrict acocutn power 
+    Use SCP to restrict account power 
     Easy setup for multiple accounts - AWS Control Tower 
     Use Tags, & Cost Allocation Tags 
     IAM guidelines 
@@ -1352,8 +1518,10 @@ Account Management , Billing and Support:
     CloudFormation to deploy stacks across regions 
     AWS Trusted Advisor for account recommendation 
     CloudTrail - record all API calls within the account 
-    If AWS account compromised: change root password, 
-          rotate all password , contact AWS support 
+    If AWS account compromised: 
+          change root password, 
+          rotate all password , 
+          contact AWS support 
 
   Billing - Summary 
     AWS Compute Optimizer 
@@ -1456,10 +1624,11 @@ AWS Architecting & Ecosystems:
     Stop guessing capacity 
     Test system at production scale 
     Drive architecture using data 
+    Simulate applications for Flash sale days 
 
   Design Principles - Best Practices :
     Scalability: 
-    Disposible Resources: 
+    Disposable Resources: 
     Automation: 
     Loose Coupling: 
     Think Services, not Servers: 
@@ -1472,12 +1641,15 @@ AWS Architecting & Ecosystems:
     5. Cost Optimization 
 
   1. Operational Execellence: 
-    -Perform Operations as a Code 
+    -Perform Operations as a Code - Infrastructure as a Code  
     -Annotate Documentation 
     -Make frequent small reversible changes 
     -Refine operations procedures frequently 
     -Anticipate failures
     -Learn from all failures  
+
+      Services Backbone: 
+        AWS CloudFormation 
 
   2. Security: 
     -Implement a strong Identity
@@ -1487,6 +1659,12 @@ AWS Architecting & Ecosystems:
     -Protect data in transit and rest 
     -Keep people away from data 
     -Prepare for security events 
+    
+      Services Backbone: 
+        IAM, AWS Organizations 
+        AWS Config, AWS CloudTrail, AWS CloudWatch
+        AWS Shield, AWS WAF , AWS Inspector 
+        KMS 
   
   3. Reliability: 
     -Test recovery procedures 
@@ -1495,12 +1673,20 @@ AWS Architecting & Ecosystems:
     -Stop guessing capacity 
     -Manage change in automation 
 
+      Services Backbone: 
+        IAM, Amzon VPC , AWS Trusted Advisor 
+        Auto Scaling 
+
   4. Performance Efficiency:
     -Use advanced technology
     -Go global in minutes
     -Use serverless architecture
     -Experiment more often
     -MBe aware of all AWS services 
+
+      Services Backbone: 
+        Auto Scaling, AWS CloudFormation
+        CloudWatch
 
   5. Cost Optimization: 
     -Adopt consumption model - Pay only for what u use 
@@ -1510,19 +1696,62 @@ AWS Architecting & Ecosystems:
     -Use managed and application level services to reduce 
       cost of ownership 
 
+    Services Backbone:
+      AWS Lambda , Fargate , Beanstalk
+      AWS Budgets, AWS Cost and Usage Reports, AWS Cost Explorer 
+      Spot Instances, Reserved Instances 
+      Auto Scaling, AWS Trusted Advisor 
+
 
   AWS Well Architected Tool:
     Review your architecture 
     Adopt best architectural practices 
     Free to use 
+    Define a workload and it Reviews the architecture against AWS 5 pillars of Well architected tool 
+
 
   AWS Right Sizing: 
+    Scaling UP is easy so Start SMALL 
     Tools: CloudWatch, Cost Explorer 
           Trusted Advisor 
+
+  AWS Ecosystems: 
+    Free resources: 
+      AWS Blogs 
+      AWS Forums
+      AWS Whitepapers 
+
+      AWS QuickStarts: 
+        -Automated Gold standard deployment in Cloud 
+      
+      AWS Solutions: 
+      AWS Support: (Basic, Developer,Business, Enterprise)
+      AWS Marketplace: 
+      AWS Training:
 
   AWS Professional Services & Partner network 
     -Global team of experts 
     -Chosen member of APN 
+
+    APN Technology Partner: 
+      -Provides Hardware, connectivity and software 
+
+    APN Consulting Partner: 
+      -Professional service to migrate/build on AWS cloud 
+
+    APN Training Partner :
+      -Who can help you learn on AWS 
+    
+    AWS Competency Programs:
+      -Partners who demostrate technical proficiency
+
+    AWS Navigate Program: 
+      -Help partners become better at their game 
+
+  AWS Knowledge Centre: 
+    Troubleshooting on various services
+    Best practices and Documentation
+      
 
 Serverless Services in AWS: 
   
