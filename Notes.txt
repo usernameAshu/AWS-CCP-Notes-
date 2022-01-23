@@ -31,12 +31,76 @@ What is Cloud Computing ?
     No Email abuse   
 
 
-IAM - Identity & Access Management: 
-  IAM Roles: 
+IAM - Identity & Access Management:   
+
+  IAM is a global service 
+  Root account 
+    ->Admin Account 
+    -> Users (for each person)
+  
+  Group: Collection of Users 
+  User can/cannot belong to a Group 
+  User can be part of Multiple Group 
+
+  IAM Permissions:
+    Users or Groups can be assigned JSON documents called policies
+    Apply Least privilege permission 
+  
+  IAM Policies: 
+    Policies attached to Group level. 
+      All Users in that Group inherit that policy 
+    User without Group can be attached "in-line policy" 
+  
+  IAM Policies Structure: 
+    Version: 
+    Id: (optional) 
+    Statement: 
+      Sid: (optional) 
+      Effect: 
+      Principal: 
+      Action: 
+      Resource: 
+      Condition: (optional)
+
+  IAM Password Policy: 
+
+  IAM MFA: Multi Factor Authentication 
+    -Recommended to use 
+    -Protect Root accounts with MFA device 
+      -Virtual MFA Device (Google Authenticator, Microsoft Authenticator)
+      -U2F Security Key: USB type physcial device 
+      -Hardware Key MFA Device: 
+  
+  AWS Access Keys: 
+    How to access AWS Management console: 
+      -Protected by password + MFA
+      -AWS CLI 
+      -AWS SDK 
+    
+    Access keys generated through AWS Console 
+      Can be used in AWS CLI to login 
+      Can be used in AWS SDK to login (Programmatic access)
+  
+  AWS Cloudshell: 
+    Terminal in Cloud of AWS
+    Free to use 
+
+  IAM Roles for Services: 
    Roles are where you can attach Policies (Permissions)
    Now these Roles can be attached to Users, AWS Services, 3rd party services
+   
    Can be attached to a EC2 instance 
-   example: DemoRoleForEC2 , policy: IAMReadOnlyAccess 
+   example IAM Role: DemoRoleForEC2 , Policy: IAMReadOnlyAccess 
+   
+   Common Roles:
+    EC2 Instance Roles 
+    Lambda Fucntion Roles 
+    Roles for CloudFormation
+  
+  IAM Security Tool: 
+    IAM Credentials Report - account level 
+
+    IAM Access Advisor - User level 
 
   Shared Responsibility: 
     AWS: 
@@ -1607,7 +1671,7 @@ Other Services:
 
   CloudEndure Disaster Recovery:
     Protect most critical Databases 
-    Use CloudEndure services to backup yoour physical servers 
+    Use CloudEndure services to backup your physical servers 
 
   AWS DataSync: 
     Move large amount of data from on premises to AWS Cloud
