@@ -78,7 +78,7 @@ IAM - Identity & Access Management:
       -AWS SDK 
     
     Access keys generated through AWS Console 
-      Can be used in AWS CLI to login 
+      Can be used in AWS CLI to login (Programmatic access)
       Can be used in AWS SDK to login (Programmatic access)
   
   AWS Cloudshell: 
@@ -99,8 +99,12 @@ IAM - Identity & Access Management:
   
   IAM Security Tool: 
     IAM Credentials Report - account level 
+      -list all users of the account 
+      -status of their credentials 
 
     IAM Access Advisor - User level 
+      -shows service permission granted to the user 
+      -used to revise the policies 
 
   Shared Responsibility: 
     AWS: 
@@ -127,6 +131,99 @@ IAM - Identity & Access Management:
 
 EC2 : Elastic Cloud Compute
  aws iam list-users 
+  
+  AWS Budgets Setup: 
+    Create a AWS Budget for Cost type
+    Set a Target budget 
+    Triggert email is 80% acheived of the target budget 
+
+  EC2 Basics: 
+    -Elastic Compute Cloud 
+    -Infrastructure as a Service 
+    -Virtual server in a the cloud 
+    -Consists of:
+      -Renting virtual machines (EC2) 
+      -Storing data on virtual drives (EBS) 
+      -Distributing Load across machines (ELB)
+      -Scaling the services using auto-scaling (ASG)
+  
+  EC2 Sizing & configuration: 
+    -OS : Linux, Windows, Mac 
+    -RAM 
+    -Compute Power & cores (CPU)
+    -Storage Space:
+      -Network attached (EBS, EFS)
+      -hardware attached (EC2 Instance store)
+    -Firewall rules ( Security Group)
+    -Bootstrap Script (EC2 User Data)
+    -Network Card: speed of the card 
+  
+  EC2 instance types: 
+    -t2.micro , t2.xlarge, c5d.4xlarge , m5.8xlarge 
+    example: m5.2xlarge
+            m:  instance class 
+            5:  version   
+            2xlarge: size within the instance class 
+    Types:
+      -General Purpose (Free tier - t2micro)
+      -Compute Optimized 
+      -Memory Optimized 
+      -Storage Optimized 
+  
+  Security Groups: 
+    -Only contain ALLOW rules 
+      -Rules by IP address/ or other security groups 
+    -Applies to Network Traffic of EC2 instance 
+    -Controls inbound and outbound network to & from EC2 instance 
+    
+    -Locked down to a Region/VPC 
+
+    -Good to have separate Security Group for SSH access.
+    -"Time-Out" -> then a security Group issue 
+    -"Connection Refused" -> application issue 
+    -All inbound traffic is blocked by default 
+    -All outbound traffic is allowed by default 
+
+    Classic Ports to know:
+      SSH:  22 
+      FTP:  21 
+      SFTP: 22 (upload using SSH)
+      HTTP: 80
+      HTTPS:443
+      RDP:  3389 (log in to a Windows instance)
+  
+  SSH overview:
+    We can use Putty in Windows to connect 
+    Windows 10 or above can access SSH via Powershell
+    Mac or Linux can access via Terminal 
+    EC Instance Connect: SSH to EC2 via AWS console 
+  
+  EC2 instance types: 
+    -On demand :
+      60s minimum billing 
+      Linux: per second 
+      Windows: per hour
+
+    -Reserved instances:
+      1 or 3 year reservation 
+      75% savings over On demand 
+      Reserve a specific instance type 
+
+    -Spot instances:
+      90% savings over On demand
+      Can be lost if anyone overbids for that instance 
+      Use for workload resilient to failure  
+      Ex: batch jobs, Data analysis, distributed workloads 
+
+    -Dedicated Instances: 
+      EC2 instancs running on hardware dedicated to you 
+      Don't get access to that hardware 
+      No control over instance placement 
+
+    -Dedicated Hosts: 
+      for server licence - BYOL (Bring Your Own License)
+      for compliance requirements
+      3 year period reservation 
 
   Shared Responsibility Model: 
     AWS:
@@ -152,12 +249,66 @@ EC2 : Elastic Cloud Compute
 
 
 EC2 Instance Storage: 
+
+  EBS Volume:
+    Elastic Block Volume - network drive which can be attached to EC2 instance
+    Can be only mounted to 1 or No instance at a time.
+    1 instance can have multiple EBS volumes 
+
+    Locked to a AZ (Availability Zone)
+
+    Have a provisined capacity 
+    Billed for the provisioned capacity 
+  
+  EBS Snapshots: 
+    Backup of the EBS volume 
+    Can copy snapshots across AZs or Regions 
+  
+  AMI (Amazon Machine Image) Overview: 
+    -customization of an EC2 instance 
+    -Built for a Specific Region 
+    -An EC2 instance can be built from:
+      -A Public AMI: 
+      -Custom AMI: 
+      -AMI from AWS Marketplace 
+
+    Question:An AWS user is trying to launch an EC2 instance in a given region. 
+    What is the region-specific constraint that the Amazon Machine Image (AMI) must meet 
+    so that it can be used for this EC2 instance?
+
+    Ans: You must use an AMI from the same region as that of the EC2 Instance 
+    The region of AMI doesn't impact performance of EC2 instance 
+
+  You can launch EC2 instances from AMI: 
+    Existing Instance --> Custom API---> New Instance 
+
+  EC2 Image Builder Overview: 
+    -Automate creation, maintain, validate and test EC2 AMIS 
+
+  EC2 Instance Store: 
+    -Hardware Disk attached to the EC2 instance 
+    -Extreme High Performace storage 
+    -Better I/O performance 
+    -Could loss the storage if stopped 
+  
+  EFS - Elastic File System: 
+    -Managed network file system 
+    -Can be mounted on 100s of EC2 instances 
+    -Works in Multi AZs
+    -Highly available, expensive 
+
+  EFS - IA: Infrequent Access 
+    92% lower cost compared to EFS Standard 
+    Files will be moved automatically to IA , based on usage 
+    Define a Lifecycle policy  
+
   Amazon File systems:
-   AWS FSx - Windows, Microsoft Server files 
-      EBS , EBS snapshots
-      EFS 
-      EFS -IA 
-      AMI 
+   Amazon FSx 
+    - Windows, Microsoft Server files 
+   
+   Amazon Fsx for Lustre: 
+    Linux File server 
+    High Performance Computing (HPC)
 
   Shared Responsibility Model:
     AWS: 
