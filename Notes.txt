@@ -280,7 +280,7 @@ EC2 Instance Storage:
     The region of AMI doesn't impact performance of EC2 instance 
 
   You can launch EC2 instances from AMI: 
-    Existing Instance --> Custom API---> New Instance 
+    Existing Instance --> Custom AMI---> New Instance 
 
   EC2 Image Builder Overview: 
     -Automate creation, maintain, validate and test EC2 AMIS 
@@ -303,7 +303,7 @@ EC2 Instance Storage:
     Define a Lifecycle policy  
 
   Amazon File systems:
-   Amazon FSx 
+   Amazon FSx for Windows:
     - Windows, Microsoft Server files 
    
    Amazon Fsx for Lustre: 
@@ -398,6 +398,7 @@ Amazon S3 service:
    Objects have Key-Value 
    Key is the object path , Value is the object data 
    Metadata - list of key/value pairs 
+   Stores Data in Flat non-hierarchical structure 
 
   S3 Bucket 
    -bucket name has to be globally unique
@@ -417,9 +418,10 @@ Amazon S3 service:
 
   S3 Security:
     User Based 
-    -IAM policies : Which API calls should be allowed for a specific IAM user 
+      -IAM policies : Which API calls should be allowed for a specific IAM user 
     Resource Based 
-    -Bucket Policies 
+      -Bucket Policies
+
     User responsible for S3 encryption 
 
   Bucket Policy:
@@ -442,6 +444,9 @@ Amazon S3 service:
                 }
               ]
             }
+
+  "Effect" this "Action" on this "Resource" for  "Principal"
+  =>Allow this GetObject on this bucket for All. 
 
   S3 Encryption: 
     User is reponsible for encryption of files 
@@ -531,6 +536,7 @@ Amazon S3 service:
   Hybrid Cloud for Storage: 
     -Part of infra is on-prem & rest on cloud 
     How to expose S3 data to on-premises ? 
+
       -AWS Storage Gateway 
         Bridge between On-prem data and Cloud data in S3 
     
@@ -643,7 +649,7 @@ Databases & Analytics:
    Accessible in mulitple regions 
    Active-Active replication => read/write to any AWS region 
 
-  Redshift: 
+  Amazon Redshift: 
    Based on PostGreSQL
    Used for OLAP (Online analytical processing)
    Data Warehousing and Analytics 
@@ -882,7 +888,7 @@ Deployments & Managing Infrastructure at Scale:
       Run commands across all servers 
 
     AWS System Manager(SSM)- Session Manager:
-      For secure shell on EC@ or on-prem servers
+      For secure shell on EC2 or on-prem servers
 
     AWS OpsWork: 
       Managed Chef & Puppet 
@@ -930,7 +936,7 @@ Global Infrastructure Section:
       Domain Registration, DNS, Health Checks, Routing Policy
 
   AWS CloudFront 
-    Content Delivery Newtork (CDN) 
+    Content Delivery Network (CDN) 
     Improves Read performance , content is cached at edge 
     DDOS protection -Integration with WAF and Shield 
     Use AWS Global Network 
@@ -952,6 +958,8 @@ Global Infrastructure Section:
     Edge location will redirect to ALB 
     Use AWS Global Network
     Integrate Shield for DDos Protection 
+    Provides static IP address 
+    Good fit for non-Http use cases 
 
   AWS Outposts: 
     Hybrid Cloud use cases 
@@ -1033,6 +1041,7 @@ Cloud Monitoring Section:
   
   Amazon CloudWatch Alarms: 
     Trigger notification for any metric 
+    Can be used to set up billing alarms to monitor estimated charges on your AWS account
     Alarm action: 
       -Auto Scaling 
       -restart a EC2 instance 
@@ -1111,12 +1120,16 @@ Cloud Monitoring Section:
 VPC & Networking Section:
 
   VPC & Subnets Primer:
-    VPC (Virtual Private Cloud) - Region Level - across Multiple AZ
-      -Subnets - each for AZ 
-        -Private Subnet (not accessible from Internet)
-        -Public Subnet  (accessible from Internet)
-        Route tables - Define access to internet from Subnets 
-        EC2 instances can be launched from Subnet
+    VPC (Virtual Private Cloud) - 
+      Region Level - across Multiple AZ 
+      One Region can have multiple VPCs 
+      Logically isolated section of the AWS Cloud 
+
+        -Subnets - each for AZ 
+          -Private Subnet (not accessible from Internet)
+          -Public Subnet  (accessible from Internet)
+          Route tables - Define access to internet from Subnets 
+          EC2 instances can be launched from Subnet
   
   Internet Gateway: 
     Connects Public Subnet's EC2 instance to Internet 
@@ -1149,21 +1162,23 @@ VPC & Networking Section:
     To connect to AWS services using a private network instead of the public network 
     For Enhanced Security of AWS services
     Two types 
-    -VPC Endpoint Gateway 
-    -VPC Enpoint Interface 
-  
-  Direct Connect: (DX)
-    -Hybrid Cloud use case 
-    -Goes over private network 
-    -Establish a physical connection 
-    -Takes Time to setup 
+    -VPC Endpoint Gateway (For S3 and DynamoDB)
+    -VPC Enpoint Interface (For rest)
 
-  Site to Site VPN: 
-    -Hybrid Cloud case 
-    -Goes over Public Internet 
-    -Connect on-premise VPN to AWS
-    -Faster setup 
-    -Customer Gateway(on prem) --> Virtual Private Gateway (AWS)
+  Hybrid Cloud - When Client has to connect On-premise resources to Cloud resources:
+
+    Direct Connect: (DX)
+      -Hybrid Cloud use case 
+      -Goes over private network 
+      -Establish a physical connection 
+      -Takes Time to setup 
+
+    Site to Site VPN: 
+      -Hybrid Cloud case 
+      -Goes over Public Internet 
+      -Connect on-premise VPN to AWS
+      -Faster setup 
+      -Customer Gateway(on prem) --> Virtual Private Gateway (AWS)
 
   Transit Gateway: 
     Connect hundreds/thousands of VPC with on-premise data centers 
@@ -1226,22 +1241,32 @@ Security & Compliance Section
 
   DDOS protection: 
     Distributed Denial of Services 
+
     -Amazon Shield Standard:
       It is activated on all AWS services by default 
+
     -Amazon Shield Advanced (Premium) 
       It covers the below services: 
       EC2, ELB, CloudFront, Global Accelerator, Route 53
+      Provides Protection to Network layer (L3), Transport Layer (L5), Application Layer (L7)
+
     -Amazon WAF: (Web Application Firewall)
       Monitors web requests forwarded to below services. 
       CloudFront, API Gateway, Application Load Balancers
       Charges for Number of Web requests received and number of Web ACL created 
+
+      WAF checks for the presence of malicious SQL code in requests (SQL Injection)
+      WAF can block ALL requests except the one you specify 
+
     -CloudFront and Route 53:
       provides attack mitigation at edge 
+
     -Leverage Auto scaling under attack 
 
   Penetration Testing 
     Without prior approval from AWS customers can
     carry out security assessment of certain services 
+
     Cannot Perform DDoS attack on AWS services 
 
   Encryption: 
@@ -1254,7 +1279,7 @@ Security & Compliance Section
       -we don't have access to keys 
       -AWS manages the keys 
         Default Encrypted services: 
-          -CloudTrain Logs 
+          -CloudTrail Logs 
           -Glacier 
           -Storage Gateway 
         Encryption opt-in services: 
@@ -1312,7 +1337,7 @@ Security & Compliance Section
     -Integrate with SNS topic 
   
   AWS Macie: 
-    -Mully managed data security and data privacy service 
+    -Fully managed data security and data privacy service 
     -Uses ML and pattern matching to discover and protect 
       sensitive data & Intellectual Property & Peronally Identifiable Information (PII)
     -Can be used to identify sensitive data in S3 bucket 
@@ -1389,6 +1414,7 @@ Machine Learning Section:
   
   Amazon Transcribe:
     Converts Speech to Text 
+    Subtitles generation
 
   Amazon Polly: 
     Converts Text to Speech 
@@ -1409,7 +1435,7 @@ Machine Learning Section:
 
   Amazon Comprehend: 
     Natural Language Processing 
-    identify language od text 
+    identify language of text 
     Sentiment analysis 
 
   Amazon SageMaker: 
@@ -1595,7 +1621,7 @@ Account Management , Billing and Support:
       -Billing Dashboards 
       -Cost Allocation Tags 
       -Cost and Usage Reports 
-      -Cost Explorer
+      -AWS Cost Explorer
 
     Monitoring against Cost Plans:
       -Billing Alarms 
@@ -1811,7 +1837,7 @@ Other Services:
   AWS Device Farm:
     Run tests concurrently on multiple devices
     Fully managed service that tests web and mobile apps 
-    To tests application on muktiple devices 
+    To tests application on multiple devices 
 
   AWS Backup:
     Cross region backup
@@ -1897,7 +1923,7 @@ AWS Architecting & Ecosystems:
     -Go global in minutes
     -Use serverless architecture
     -Experiment more often
-    -MBe aware of all AWS services 
+    -Be aware of all AWS services 
 
       Services Backbone: 
         Auto Scaling, AWS CloudFormation
