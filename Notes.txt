@@ -196,7 +196,9 @@ EC2 : Elastic Cloud Compute
     We can use Putty in Windows to connect 
     Windows 10 or above can access SSH via Powershell
     Mac or Linux can access via Terminal 
-    EC Instance Connect: SSH to EC2 via AWS console 
+  
+  EC Instance Connect: SSH to EC2 via AWS console
+    Operating System Independent  
   
   EC2 instance types: 
     -On demand :
@@ -296,6 +298,7 @@ EC2 Instance Storage:
     -Can be mounted on 100s of EC2 instances 
     -Works in Multi AZs
     -Highly available, expensive 
+    -Can be mounted on On-premise Servers 
 
   EFS - IA: Infrequent Access 
     92% lower cost compared to EFS Standard 
@@ -347,26 +350,84 @@ EC2 Instance Storage:
 ELB & ASG - Elastic Load Balancing & Auto Scaling Groups 
   
   Scalability & High Availability 
-   High Availability - running instance in >= 2 AZs 
-   Elasticity = auto scaling 
+    High Availability  
+        -running instance in >= 2 AZs
+        -In case of a disaster in any Data centre , the app will still be available
+        -Run Instances of same application in Multi AZ 
+        -Auto Scaling Group Multi AZ 
+
+    Scalability:
+      Vertical Scaling: Increasing instance size (scale up/down)
+      Horzontal Scaling: Increasing number of instances (scale in/out)
+      -Auto Scaling Group 
+      -Load Balancer 
+   
+  Scalability vs Elasticity (vs Agility)
+
+    Scalability: 
+      -Ability to accomodate larger load my making hardware stronger (scale up)
+      ,or by adding more nodes (scale out)
+
+    Elasticity: 
+      -Once a system is scalable , there should be some sort of 
+      "Auto scaling", so that system can scale based on Load. 
+      System must be pay per use and "cloud-friendly"
+
+    Agility (not related to Scalability - distractor)
+      Ability to add new Cloud resouces in minutes 
+      Reducing the time to add new Cloud resources 
 
   Load Balancing :
-   Load balancers are servers that forward internet traffic to multiple
-   servers (EC2 Instances) downstream.
-   ELB - Elastic Load Balancer 
-    ALB (Application) - Http L7 
-    NLB (network)-  TCP -L4
-    CLB (Classic) 
+    Load balancers are servers that forward internet traffic to multiple
+    servers (EC2 Instances) downstream.
+    -Expose a single point of access (DNS)
+    -Do regular health checks 
+    -Provide SSL termination (HTTPS) for websites  
+
+  ELB - Elastic Load Balancer 
+    AWS Managed Load Balancer 
+
+    Types of Load Balancers: 
+      ALB (Application Load balancer) - Http/HTTPS L7 
+        -Layer 7 
+
+      NLB (network load balancer)-  TCP -L4
+        -ultra high performance, allows for TCP 
+        -Layer 4 
+        
+      CLB (Classic Load Balancer) 
+        -Layer 4 and Layer 7
+        -Service is retired from AWS 
 
   Auto Scaling Group (ASG) strategies :
-   Manual Scaling
-    -update the size of ASG manually 
-   Dynamic Scaling 
-    -respond to changing demand:
-      1.Simple/Step scaling 2. Target Tracking scaling 3. Scheduled Scaling
-   Predictive Scaling 
-    -Uses ML to predict future traffic 
-    -Scaling happens before the event 
+    We have a application that can be load balanced by Elastic Load Balancer 
+    Goal of ASG groups: 
+      -Sacle out (add EC2 instances) to match increase load 
+      -Scale in (remove EC2 instances) to match decrease load 
+      -Ensure min/max number of machines running 
+      -Automatically register new instance to Load Balancer 
+      -Replace unhealthy instances 
+
+      -Cost savings : Only Run at Optimal Capacity (Main Goal)
+  
+  Auto Scaling Group (ASG) works Hand-inHand with Elastic Load balancer (ELB)
+    Minimum Capacity 
+    Desired Capacity (Optimal)
+    Maximum Capacity 
+
+  Auto Scaling Group (ASG) Strategy: 
+    Manual Scaling
+     -update the size of ASG manually 
+
+    Dynamic Scaling 
+     -respond to changing demand automatically:
+        1. Simple/Step scaling 
+        2. Target Tracking scaling 
+        3. Scheduled Scaling
+
+    Predictive Scaling 
+     -Uses ML to predict future traffic 
+     -Scaling happens before the event 
 
   Summary: 
   -High Availability vs Scalability vs Elasticity vs Agility:
@@ -1244,11 +1305,15 @@ Security & Compliance Section
 
     -Amazon Shield Standard:
       It is activated on all AWS services by default 
+    
+    Shield Standard with CloudFront and Route 53:
+      -provides attack mitigation at edge 
+      -you receive comprehensive availability protection against all known infrastructure (Layer 3 and 4) attacks.
 
     -Amazon Shield Advanced (Premium) 
       It covers the below services: 
-      EC2, ELB, CloudFront, Global Accelerator, Route 53
-      Provides Protection to Network layer (L3), Transport Layer (L5), Application Layer (L7)
+      EC2,  Elastic Load Balancing, CloudFront, Global Accelerator, Route 53
+      Provides Protection to Network layer (L3), Transport Layer (L4), Application Layer (L7)
 
     -Amazon WAF: (Web Application Firewall)
       Monitors web requests forwarded to below services. 
@@ -1258,8 +1323,7 @@ Security & Compliance Section
       WAF checks for the presence of malicious SQL code in requests (SQL Injection)
       WAF can block ALL requests except the one you specify 
 
-    -CloudFront and Route 53:
-      provides attack mitigation at edge 
+    
 
     -Leverage Auto scaling under attack 
 
@@ -1843,12 +1907,23 @@ Other Services:
     Cross region backup
     Cross account backup
 
-  Disaster Recovery Services:
-    -Backup and restore
+  Disaster Recovery Strategies:
+    -Cheapest Strategy: Backup and restore
+
+    -Core functions available, Minimal setup, ready to scale:
+      Pilot Light 
+    
+    -Full version of the app, but at Minimum size: 
+      Warm Standby 
+    
+    -Full Version of the app, at full size: Most expensive  
+      Multi-Site/Hot-Site 
+
+
 
   CloudEndure Disaster Recovery:
     Protect most critical Databases 
-    Use CloudEndure services to backup your physical servers 
+    Use CloudEndure services to backup your physical servers to AWS cloud 
 
   AWS DataSync: 
     Move large amount of data from on premises to AWS Cloud
