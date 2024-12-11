@@ -1,0 +1,97 @@
+Need Revision: 
+1. VPC and Networking 
+2. Security and Compliance section 
+
+As per the AWS shared responsibility model, which of the following is a responsibility of AWS from a security and compliance point of view?
+-Edge Location management 
+
+A customer has created a VPC and a subnet within AWS Cloud. Which of the following statements is correct?
+-VPC spans all of the availability Zones in a Region , 
+-Subnet spans only One availability Zone in the region 
+
+--New--
+Needs Revision:
+-EC2 Instances 
+-Other Services 
+-Machine Learning 
+-AWS Transit Gateway 
+-AWS Redshift 
+
+VPC Endpoints:For connecting AWS resources privately to resources inside private subnet 
+VPC Endpoint Gateway: for S3 & DynamoDB
+VPC Endpoint Interface: All rest 
+
+Which AWS service can help you analyze your infrastructure to identify unattached or underutilized EBS volumes?
+-AWS Trusted Advisor 
+
+Which AWS service can be used to set up billing alarms to monitor estimated charges on your AWS account?
+-CloudWatch
+
+As per the AWS Shared Responsibility Model, 
+which of the following is a responsibility of AWS from a security and compliance point of view?
+-Patching networking Infrastructure 
+
+Reserved Instance pricing is available for which of the following AWS services? (Select two)
+-RDS , EC2 
+
+Review the Payment Card Industry (PCI) reports on AWS Cloud
+-AWS Artifact 
+
+Company can compare the cost of running their IT infrastructure on-premises vs AWS Cloud using ?
+-AWS Pricing Calculator 
+
+ MOST efficient solution for conneting thousands of cloud VPC with On-premise Data Centre ?
+ -AWS Transit Gateway 
+ -AWS Direct Connect 
+
+ AWS storage services can be directly used with on-premises systems
+ -EFS 
+
+ You can use Read Replicas for both improved read performance as well as Disaster Recovery
+ -You can also place your read replica in a different AWS Region closer to your users for better performance.
+ -Using a cross-Region Read Replica can also help ensure that you get back up and running 
+    if you experience a regional availability issue in case of a disaster
+
+Amazon EC2 reserved instances:
+-In AWS oraganization, if reserverd instances are to be shared among accounts. 
+Then in the shared account, reserved instance should start from the same AZ to avail cost benefit 
+
+Disastor Recovery question: applications that need to be accessible 24*7, These applications are not mission-critical
+In case of a disaster, these applications can be managed on a lesser number of instances
+-Warm Standby strategy 
+
+Which of the following S3 storage classes do not charge any data retrieval fee?
+-S3 Standard
+-S3 Intelligent Tiering 
+
+Which of the following types are free under the Amazon S3 pricing model? 
+-Data transferred IN from Internet 
+-Data transferred OUT to EC2 instance where Region is same for S3 bucket & that EC2 instance 
+-Data transferred OUT to CloudFront
+
+Where are EBS snapshots stored in the AWS Cloud?
+-
+
+Store secondary backup copies of the on-premises data. Which S3 Storage Class would you use for a cost-optimal yet rapid access solution?
+-
+
+Which AWS tool/service will help you define your cloud infrastructure using popular programming languages such as Python and JavaScript?
+-
+
+Which AWS service can inspect CloudFront distributions running on any HTTP web-server?
+-
+
+Which of the following criteria are used to charge for Elastic Block Store (EBS) volumes? (Select TWO)
+-
+
+According to the Well-Architected Framework, which of the following action is recommended in the Security pillar?
+-
+
+Company also plans to increase their workloads during this 3 years Reservation Period of EC2 Instance. 
+-
+
+Which of the following criteria are used to charge for Elastic Block Store (EBS) volumes? (Select TWO)
+-
+
+Which Amazon EC2 Auto Scaling feature can help with fault tolerance?
+-
